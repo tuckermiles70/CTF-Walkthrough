@@ -497,5 +497,13 @@ The password of user bandit25 is uNG9O58gUE7snukf3bvZ0rxhtnjzSGzG
 
 ## Level 25
 
+### Tricky tty
+```
+showme the text
 
+5czgV9L3Xx8JPOyRbXh6lQbmIOWvPT6Z
+
+```
+
+## Level 26
 
